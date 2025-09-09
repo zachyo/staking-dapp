@@ -73,7 +73,7 @@ export const WithdrawToken = ({ position }: { position: UserDetails }) => {
         <DialogFooter className="text-white">
           <Button
             onClick={handleWithdraw}
-            disabled={!amount || parseFloat(amount) <= 0 || isWithdrawing}
+            disabled={parseFloat(amount) <= 0 || isWithdrawing}
           >
             {isWithdrawing ? "Withdrawing..." :"Withdraw"}
           </Button>

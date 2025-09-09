@@ -3,9 +3,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import useStakeTokenStore from "@/config/store";
 import useGetStakingStats from "@/hooks/useGetStakingStats";
 import useTokenDetails from "@/hooks/useGetTokenDetails";
+import { useAccount } from "wagmi";
 
 export const ContractStats = () => {
   const {totalStaked, currentAPR} = useGetStakingStats();
+  const {address} = useAccount()
   const {userBal} = useTokenDetails()
   const tokenSymbol = useStakeTokenStore((state) => state.tokenSymbol);
 
@@ -24,7 +26,7 @@ export const ContractStats = () => {
     },
     {
       title: "Your Balance",
-      value: `${userBal} MST`,
+      value: address ? `${userBal} MST` : "Connect your wallet",
       icon: <Banknote className="h-4 w-4" />,
       color: "text-cyan-600",
     }, 

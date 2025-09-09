@@ -91,7 +91,7 @@ export const UserPositionCard = () => {
         <div className="flex flex-col gap-2">
           <Button
             onClick={onClaimRewards}
-            disabled={Number(pendingRewards) <= 0 || !position?.canWithdraw}
+            disabled={Number(pendingRewards) <= 0}
             className="w-full"
           >
             Claim Rewards ({pendingRewards} MST)

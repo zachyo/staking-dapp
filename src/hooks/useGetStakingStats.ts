@@ -36,8 +36,7 @@ const useGetStakingStats = () => {
     const onStaked = (logs:any) => {
       const log = logs[0];
       if (log?.args) {
-        setTotalStaked(formatUnits(log.args.newTotalStaked, 18));
-        setCurrentAPR(log.args.currentRewardRate);
+        setTotalStaked(formatUnits(log.args.newTotalStaked, 18));        
       }
     };
 
