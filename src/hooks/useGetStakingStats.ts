@@ -1,0 +1,35 @@
+import { useEffect, useMemo, useState } from "react";
+import { usePublicClient } from "wagmi";
+import { STAKING_CONTRACT_ABI } from "../config/staking_contract_abi";
+import { formatUnits } from "viem";
+
+const useGetStakingStats = () => {
+  const publicClient = usePublicClient();
+  const [totalStaked, setTotalStaked] = useState('0');
+  const [currentAPR, setCurrentAPR] = useState(0n);
+
+  useEffect(() => {
+    if (!publicClient) return;
+
+    (async () => {
+      const result = await publicClient?.readContract({
+        address: import.meta.env.VITE_STAKING_CONTRACT,
+        abi: STAKING_CONTRACT_ABI,
+        functionName: "totalStaked",
+      });
+
+      const aprResult = await publicClient?.readContract({
+        address: import.meta.env.VITE_STAKING_CONTRACT,
+        abi: STAKING_CONTRACT_ABI,
+        functionName: "currentRewardRate",
+      });
+
+      setTotalStaked(formatUnits(result, 18));
+      setCurrentAPR(aprResult as bigint);
+    })();
+  }, [publicClient]);
+
+  return useMemo(() => ({ totalStaked, currentAPR }), [totalStaked, currentAPR]);
+};
+
+export default useGetStakingStats;
