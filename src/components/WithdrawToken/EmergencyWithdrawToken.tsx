@@ -11,17 +11,24 @@ import {
 } from "@/components/ui/dialog";
 import { AlertTriangle } from "lucide-react";
 import type { UserDetails } from "@/hooks/useGetUserDetails";
+import { formatUnits } from "viem";
 
 export const EmergencyWithdrawToken = ({
   position,
   penalty = 10,
- }:{position : UserDetails, penalty: number}) => {
+}: {
+  position: UserDetails;
+  penalty?: number;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const penaltyAmount = ((parseFloat(position.stakedAmount) * penalty) / 100).toFixed(
-    2
-  );
+  const stakedAmount = formatUnits(position?.stakedAmount ?? 0n, 18);
+
+  const penaltyAmount = (
+    (parseFloat(stakedAmount) * penalty) /
+    100
+  ).toFixed(2);
   const receiveAmount = (
-    parseFloat(position.stakedAmount) - parseFloat(penaltyAmount)
+    parseFloat(stakedAmount) - parseFloat(penaltyAmount)
   ).toFixed(2);
 
   const handleEmergencyWithdraw = () => {

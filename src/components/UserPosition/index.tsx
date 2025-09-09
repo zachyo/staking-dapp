@@ -13,6 +13,7 @@ import { Coins } from "lucide-react";
 import { formatTimeRemaining } from "@/lib/utils";
 import { WithdrawToken } from "../WithdrawToken/WithdrawToken";
 import useClaimRewards from "@/hooks/useClaimRewards";
+import { EmergencyWithdrawToken } from "../WithdrawToken/EmergencyWithdrawToken";
 
 export const UserPositionCard = () => {
   const position= useGetUserDetails();
@@ -75,9 +76,9 @@ export const UserPositionCard = () => {
 
           <div className="grid grid-cols-1 gap-2">
             <WithdrawToken position={position as UserDetails} />
-            {/* <EmergencyWithdrawToken 
-              position={position}               
-            /> */}
+            <EmergencyWithdrawToken 
+              position={position as UserDetails}               
+            />
           </div>
         </div>
       </CardContent>
