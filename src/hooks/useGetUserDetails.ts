@@ -42,7 +42,7 @@ const useGetUserDetails = () => {
   useEffect(() => {
     if (!publicClient || !address) return;
 
-    const onUserEvent = (logs) => {
+    const onUserEvent = (logs:any) => {
       const log = logs[0];
       if (log?.args?.user === address) {
         fetchUserDetails();
@@ -50,14 +50,17 @@ const useGetUserDetails = () => {
     };
 
     const stakedEventAbiItem = STAKING_CONTRACT_ABI.find(
+      // @ts-ignore
       (x) => x.name === "Staked" && x.type === "event"
     );
 
     const withdrawnEventAbiItem = STAKING_CONTRACT_ABI.find(
+      // @ts-ignore
       (x) => x.name === "Withdrawn" && x.type === "event"
     );
 
     const rewardsClaimedEventAbiItem = STAKING_CONTRACT_ABI.find(
+      // @ts-ignore
       (x) => x.name === "RewardsClaimed" && x.type === "event"
     );
 

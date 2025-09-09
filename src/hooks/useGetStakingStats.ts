@@ -41,6 +41,7 @@ const useGetStakingStats = () => {
     };
 
     const stakedEventAbiItem = STAKING_CONTRACT_ABI.find(
+      // @ts-ignore
       (x) => x.name === "Staked" && x.type === "event"
     );
 
