@@ -1,50 +1,13 @@
 import AppLayout from "./layout";
 import { ContractStats } from "./components/ContractStats";
-import { UserSummaryCard } from "./components/UserSummary";
 import { UserPositionCard } from "./components/UserPosition";
-import { Card, CardContent } from "./components/ui/card";
-import { Coins } from "lucide-react";
 import useTokenDetails from "./hooks/useGetTokenDetails";
 import { Toaster } from "./components/ui/sonner";
 
-const mockUserData = {
-  totalStaked: "1,500.00",
-  pendingRewards: "45.75",
-  positions: [
-    {
-      id: 1,
-      amount: "1000.00",
-      stakedAt: "2024-01-15",
-      timeUntilUnlock: 86400, // seconds
-      canWithdraw: false,
-      pendingRewards: "30.25",
-    },
-    {
-      id: 2,
-      amount: "500.00",
-      stakedAt: "2024-01-10",
-      timeUntilUnlock: 0,
-      canWithdraw: true,
-      pendingRewards: "15.50",
-    },
-  ],
-};
+
 
 function App() {
-  const handleWithdraw = (positionId: number, amount: number) => {
-    console.log("Withdrawing:", amount, "from position:", positionId);
-    // Implement contract call
-  };
-
-  const handleClaimRewards = (positionId: number) => {
-    console.log("Claiming rewards for position:", positionId);
-    // Implement contract call
-  };
-
-  const handleEmergencyWithdraw = (positionId: number) => {
-    console.log("Emergency withdraw for position:", positionId);
-    // Implement contract call
-  };
+  
 
   const { tokenSymbol, userBal } = useTokenDetails();
   console.log({ userBal });
