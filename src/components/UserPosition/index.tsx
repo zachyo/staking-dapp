@@ -9,14 +9,16 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import useGetUserDetails, { type UserDetails } from "@/hooks/useGetUserDetails";
 import { formatUnits } from "viem";
-import { Coins, Loader2 } from "lucide-react";
+import { AlertTriangle, Coins, Loader2 } from "lucide-react";
 import { formatTimeRemaining } from "@/lib/utils";
 import { WithdrawToken } from "../WithdrawToken/WithdrawToken";
 import useClaimRewards from "@/hooks/useClaimRewards";
 import { EmergencyWithdrawToken } from "../WithdrawToken/EmergencyWithdrawToken";
+import { useAccount } from "wagmi";
 
 export const UserPositionCard = () => {
   const {userDetails, isLoading} = useGetUserDetails();
+  const {address} = useAccount()
   // const tokenSymbol = useStakeTokenStore(state => state.tokenSymbol)
   const position = userDetails;
   const pendingRewards = Number(
@@ -25,12 +27,23 @@ export const UserPositionCard = () => {
   const onClaimRewards = useClaimRewards()
   console.log({position})
 
+  if (!address) {
+    return (
+      <Card>
+        <CardContent className="text-center py-8">
+          <AlertTriangle className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+          <p className="text-gray-600 mb-4">Connect Wallet to see staking position</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
   if (formatUnits(position?.stakedAmount ?? 0n, 18) === "0" && !isLoading) {
     return (
       <Card>
         <CardContent className="text-center py-8">
           <Coins className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-          <p className="text-gray-600 mb-4">No staking positions found</p>
+          <p className="text-gray-600 mb-4">No staking position found</p>
         </CardContent>
       </Card>
     );
@@ -40,7 +53,7 @@ export const UserPositionCard = () => {
       <Card>
         <CardContent className="text-center py-8">
           <Loader2 className="mx-auto h-12 w-12 text-gray-400 mb-4 animate-spin" />
-          <p className="text-gray-600 mb-4">Loading positions...</p>
+          <p className="text-gray-600 mb-4">Loading position...</p>
         </CardContent>
       </Card>
     );
