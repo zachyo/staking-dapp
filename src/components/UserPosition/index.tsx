@@ -9,28 +9,38 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import useGetUserDetails, { type UserDetails } from "@/hooks/useGetUserDetails";
 import { formatUnits } from "viem";
-import { Coins } from "lucide-react";
+import { Coins, Loader2 } from "lucide-react";
 import { formatTimeRemaining } from "@/lib/utils";
 import { WithdrawToken } from "../WithdrawToken/WithdrawToken";
 import useClaimRewards from "@/hooks/useClaimRewards";
 import { EmergencyWithdrawToken } from "../WithdrawToken/EmergencyWithdrawToken";
 
 export const UserPositionCard = () => {
-  const position= useGetUserDetails();
+  const {userDetails, isLoading} = useGetUserDetails();
   // const tokenSymbol = useStakeTokenStore(state => state.tokenSymbol)
-  // const position = p?.userDetails;
+  const position = userDetails;
   const pendingRewards = Number(
     formatUnits(position?.pendingRewards ?? 0n, 18)
   ).toFixed(5);
   const onClaimRewards = useClaimRewards()
-  console.log(position)
+  console.log({position})
 
-  if (formatUnits(position?.stakedAmount ?? 0n, 18) === "0") {
+  if (formatUnits(position?.stakedAmount ?? 0n, 18) === "0" && !isLoading) {
     return (
       <Card>
         <CardContent className="text-center py-8">
           <Coins className="mx-auto h-12 w-12 text-gray-400 mb-4" />
           <p className="text-gray-600 mb-4">No staking positions found</p>
+        </CardContent>
+      </Card>
+    );
+  }
+  if (isLoading) {
+    return (
+      <Card>
+        <CardContent className="text-center py-8">
+          <Loader2 className="mx-auto h-12 w-12 text-gray-400 mb-4 animate-spin" />
+          <p className="text-gray-600 mb-4">Loading positions...</p>
         </CardContent>
       </Card>
     );

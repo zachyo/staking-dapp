@@ -57,7 +57,7 @@ export const EmergencyWithdrawToken = ({
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span>Staked Amount:</span>
-              <span>{position.stakedAmount} MTK</span>
+              <span>{stakedAmount} MTK</span>
             </div>
             <div className="flex justify-between text-red-600">
               <span>Penalty ({penalty}%):</span>

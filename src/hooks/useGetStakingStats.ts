@@ -9,9 +9,10 @@ const useGetStakingStats = () => {
   const [currentAPR, setCurrentAPR] = useState(0n);
 
   useEffect(() => {
-    if (!publicClient) return;
 
     (async () => {
+    if (!publicClient) return;
+
       const result = await publicClient?.readContract({
         address: import.meta.env.VITE_STAKING_CONTRACT,
         abi: STAKING_CONTRACT_ABI,

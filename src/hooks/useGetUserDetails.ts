@@ -12,26 +12,32 @@ export interface UserDetails {
 
 const useGetUserDetails = () => {
   const { address } = useAccount();
-  const publicClient = usePublicClient()
-const [userDetails, setUserDetails] = useState<UserDetails>()
+  const publicClient = usePublicClient();
+  const [userDetails, setUserDetails] = useState<UserDetails>();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-      if (!publicClient || !address) return;
-  
-      (async () => {
-        const userDetailsResult = await publicClient.readContract({
-          address: import.meta.env.VITE_STAKING_CONTRACT,
-          abi: STAKING_CONTRACT_ABI,
-          functionName: "getUserDetails",
-          args: [address],
-        });
-  
-        setUserDetails(userDetailsResult);
-      })();
-    }, [publicClient]);
+    (async () => {
+      if (!publicClient || !address) {
+        setUserDetails(undefined);
+        return;
+      }
 
-  return useMemo(() => userDetails, [userDetails]);
+      setIsLoading(true);
 
+      const userDetailsResult = await publicClient.readContract({
+        address: import.meta.env.VITE_STAKING_CONTRACT,
+        abi: STAKING_CONTRACT_ABI,
+        functionName: "getUserDetails",
+        args: [address],
+      });
+
+      setUserDetails(userDetailsResult);
+      setIsLoading(false);
+    })();
+  }, [publicClient, address]);
+
+  return useMemo(() => ({userDetails, isLoading}), [userDetails, isLoading, publicClient]);
 };
 
 export default useGetUserDetails;

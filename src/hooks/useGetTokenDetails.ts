@@ -25,9 +25,10 @@ const useTokenDetails = () => {
   }, [publicClient]);
 
   useEffect(() => {
-    if (!publicClient || !address) return;
 
     (async () => {
+    if (!publicClient || !address) return;
+
       const balResult = await publicClient.readContract({
         address: import.meta.env.VITE_STAKE_TOKEN,
         abi: STAKE_TOKEN_ABI,
@@ -36,14 +37,15 @@ const useTokenDetails = () => {
       });
 
       setUserBal(Number(formatUnits(balResult, 18)));
-      
+
     })();
-  }, [publicClient]);
+  }, [publicClient, address]);
 
   useEffect(() => {
-    if (!publicClient || !address) return;
 
     (async () => {
+    if (!publicClient || !address) return;
+
       const allowanceResult = await publicClient.readContract({
         address: import.meta.env.VITE_STAKE_TOKEN,
         abi: STAKE_TOKEN_ABI,
@@ -53,7 +55,7 @@ const useTokenDetails = () => {
 
       setAllowance(Number(formatUnits(allowanceResult, 18)));
     })();
-  }, [publicClient]);
+  }, [publicClient, address]);
 
   return useMemo(() => ({ tokenSymbol, userBal, allowance }), [tokenSymbol, userBal, allowance]);
 };
