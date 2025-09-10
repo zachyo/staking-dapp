@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,16 +12,19 @@ import {
 import { AlertTriangle } from "lucide-react";
 import type { UserDetails } from "@/hooks/useGetUserDetails";
 import { formatUnits } from "viem";
+import useGetStakingStats from "@/hooks/useGetStakingStats";
+import useWithdraw from "@/hooks/useWithdrawToken";
 
 export const EmergencyWithdrawToken = ({
   position,
-  penalty = 10,
 }: {
   position: UserDetails;
-  penalty?: number;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const stakedAmount = formatUnits(position?.stakedAmount ?? 0n, 18);
+  const { emergencyWithdrawPenalty } = useGetStakingStats()
+  const penalty = Number(emergencyWithdrawPenalty)
+  const { emergencyWithdraw, isConfirming} = useWithdraw({onSuccess: ()=> {}})
 
   const penaltyAmount = (
     (parseFloat(stakedAmount) * penalty) /
@@ -32,9 +35,15 @@ export const EmergencyWithdrawToken = ({
   ).toFixed(2);
 
   const handleEmergencyWithdraw = () => {
-    // onEmergencyWithdraw(position.id);
-    setIsOpen(false);
+    emergencyWithdraw();    
   };
+
+
+  useEffect(()=>{
+    if (!isConfirming) {
+      setIsOpen(false);
+    }
+  }, [isConfirming])
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -57,15 +66,15 @@ export const EmergencyWithdrawToken = ({
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span>Staked Amount:</span>
-              <span>{stakedAmount} MTK</span>
+              <span>{stakedAmount} MST</span>
             </div>
             <div className="flex justify-between text-red-600">
               <span>Penalty ({penalty}%):</span>
-              <span>-{penaltyAmount} MTK</span>
+              <span>-{penaltyAmount} MST</span>
             </div>
             <div className="flex justify-between font-bold border-t pt-2">
               <span>You'll receive:</span>
-              <span>{receiveAmount} MTK</span>
+              <span>{receiveAmount} MST</span>
             </div>
           </div>
           <div className="bg-yellow-50 border border-yellow-200 rounded-md p-3">
@@ -79,8 +88,8 @@ export const EmergencyWithdrawToken = ({
           <Button variant="outline" onClick={() => setIsOpen(false)}>
             Cancel
           </Button>
-          <Button variant="destructive" onClick={handleEmergencyWithdraw}>
-            Confirm Emergency Withdrawal
+          <Button variant="destructive" onClick={handleEmergencyWithdraw} disabled={isConfirming}>
+            {isConfirming ? "Confirming..." : "Confirm Emergency Withdrawal"}
           </Button>
         </DialogFooter>
       </DialogContent>

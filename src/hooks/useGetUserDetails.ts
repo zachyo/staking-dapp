@@ -1,6 +1,7 @@
 import { useAccount, usePublicClient } from "wagmi";
 import { STAKING_CONTRACT_ABI } from "../config/staking_contract_abi";
 import { useEffect, useMemo, useState } from "react";
+import { useStakingStore } from "@/config/store";
 
 export interface UserDetails {
   stakedAmount: bigint;
@@ -15,6 +16,7 @@ const useGetUserDetails = () => {
   const publicClient = usePublicClient();
   const [userDetails, setUserDetails] = useState<UserDetails>();
   const [isLoading, setIsLoading] = useState(false);
+  const { setUser} = useStakingStore()
 
   const fetchUserDetails = async () => {
     if (!publicClient || !address) {
@@ -32,6 +34,7 @@ const useGetUserDetails = () => {
     });
 
     setUserDetails(userDetailsResult);
+    setUser(userDetailsResult)
     setIsLoading(false);
   };
 
@@ -64,6 +67,11 @@ const useGetUserDetails = () => {
       (x) => x.name === "RewardsClaimed" && x.type === "event"
     );
 
+     const emergencyWithdrawnEventAbiItem = STAKING_CONTRACT_ABI.find(
+      // @ts-ignore
+      (x) => x.name === "EmergencyWithdrawn" && x.type === "event"
+    );
+
     const unwatchStaked = publicClient.watchEvent({
       address: import.meta.env.VITE_STAKING_CONTRACT,
       event: stakedEventAbiItem,
@@ -82,10 +90,17 @@ const useGetUserDetails = () => {
       onLogs: onUserEvent,
     });
 
+    const unwatchEmergencyWithdrawn = publicClient.watchEvent({
+      address: import.meta.env.VITE_STAKING_CONTRACT,
+      event: emergencyWithdrawnEventAbiItem,
+      onLogs: onUserEvent,
+    });
+
     return () => {
       unwatchStaked();
       unwatchWithdrawn();
       unwatchRewardsClaimed();
+      unwatchEmergencyWithdrawn()
     };
   }, [publicClient, address]);
 

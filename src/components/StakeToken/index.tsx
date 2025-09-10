@@ -19,7 +19,10 @@ export const StakeToken = () => {
   const [amount, setAmount] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const tokenSymbol = useStakeTokenStore((state) => state.tokenSymbol);
-  const onStake = useStakeToken();
+  const {useStake : onStake} = useStakeToken({onSuccess: () => {
+    setAmount("");
+    setIsOpen(false);
+  }});
 
   const handleStake = () => {
     if (amount && parseFloat(amount) > 0) {
