@@ -1,39 +1,26 @@
-
-import { StakeToken } from "@/components/StakeToken";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import React from "react";
 import type { ReactNode } from "react";
-import { useAccount } from "wagmi";
+import { Header } from "./header";
 
 type AppLayoutProps = {
   children: ReactNode;  
 };
 
-const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
-  const { isConnected, address } = useAccount();
-
-  
+const AppLayout = ({ children }: AppLayoutProps) => {
   return (
-    <div
-      style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
-    >
-      <div className="bg-slate-500">
-        <header className="h-20 py-3 flex justify-between items-center mx-auto container">
-          <p className="text-white capitalize font-medium text-2xl">
-            StakingDapp
-          </p>
-          <div className="flex items-center gap-4">
-            <ConnectButton/>  
-            {isConnected && address && <StakeToken />}       
-          </div>
-        </header>
-      </div>
-      <main className="flex-1">{children}</main>
-      <footer className=" bg-slate-500 text-white mt-5">
-        <p className="text-center my-6">StakingDapp &copy; 2025</p>
-      </footer>
+    <div className="min-h-screen bg-gradient-to-br from-background via-card-glass to-secondary/20">
+      {/* Background Pattern */}
+      <div 
+        className="fixed inset-0 opacity-5 pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2344827b' fill-opacity='0.4'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+        }}
+      />
+      <Header />    
+      <main className="relative z-10">
+        {children}
+      </main>
     </div>
-  );
-};
+  )
+}
 
 export default AppLayout;

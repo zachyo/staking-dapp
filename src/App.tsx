@@ -3,6 +3,7 @@ import { ContractStats } from "./components/ContractStats";
 import { UserPositionCard } from "./components/UserPosition";
 import useTokenDetails from "./hooks/useGetTokenDetails";
 import { Toaster } from "./components/ui/sonner";
+import { StakingDashboard } from "./components/Dashboard/Dashboard";
 
 
 
@@ -14,7 +15,8 @@ function App() {
   console.log({ userBal });
   return (
     <AppLayout>
-      <div className="container mx-auto px-4 py-8">
+      <StakingDashboard/>
+      <div className="container mx-auto px-4 py-8 hidden">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">StakingDapp</h1>

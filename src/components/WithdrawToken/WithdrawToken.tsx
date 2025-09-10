@@ -19,7 +19,11 @@ export const WithdrawToken = ({ position }: { position: UserDetails }) => {
   const [amount, setAmount] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const stakedAmount = formatUnits(position?.stakedAmount ?? 0n, 18);
-  const { withdraw, isWithdrawing} = useWithdraw()
+  const { withdraw, isConfirming: isWithdrawing} = useWithdraw({
+    onSuccess: () => {
+      setIsOpen(false);
+    }
+  })
 
   const handleWithdraw = () => {
     if (amount && parseFloat(amount) > 0) {
@@ -36,7 +40,7 @@ export const WithdrawToken = ({ position }: { position: UserDetails }) => {
           variant="outline"
           size="sm"
           disabled={!position?.canWithdraw}
-          className="w-full !bg-white !border-black"
+          className=" !bg-white !border-black"
         >
           Withdraw
         </Button>
