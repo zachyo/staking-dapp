@@ -12,7 +12,7 @@ import useMintTokens from "@/hooks/useMintTokens";
 const MintCard = () => {
   const { mintTokens, isMinting } = useMintTokens();
   return (
-    <Card className="bg-gradient-glass border-border/50 backdrop-blur-sm shadow-large">
+    <Card className="bg-gradient-glass border-border backdrop-blur-sm shadow-large">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Banknote className="h-6 w-6 text-primary" />

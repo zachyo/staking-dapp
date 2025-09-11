@@ -12,6 +12,7 @@ import { Gift, TrendingUp, Clock } from "lucide-react";
 import { useStakingStore } from "@/config/store";
 import { formatUnits } from "viem";
 import useClaimRewards from "@/hooks/useClaimRewards";
+import {differenceInHours, fromUnixTime } from "date-fns";
 
 export const RewardsCard = () => {
   const { user, protocol } = useStakingStore();
@@ -23,21 +24,26 @@ export const RewardsCard = () => {
 
   if (!user || !protocol) return null;
 
-  const totalClaimable = Number(formatUnits(user.pendingRewards, 18)).toFixed(
+  const totalClaimable = Number(formatUnits(user.pendingRewards ?? 0n, 18)).toFixed(
     5
   );
 
   const dailyRewards = Number(
     formatUnits(
       BigInt(
-        Math.floor((Number(user.stakedAmount) * Number(protocol.currentAPR)) / 100 / 365)
+        Math.floor(
+          (Number(user.stakedAmount ?? 0n) * Number(protocol.currentAPR ?? 0n)) / 100 / 365
+        )
       ),
       18
     )
   ).toFixed(4);
+  const date = fromUnixTime(Number(user?.lastStakeTimestamp ?? 0n));
+  const diff = differenceInHours(new Date(), date);
+  const showDifference = diff > 24 ? Math.floor(diff / 24) : diff
 
   return (
-    <Card className="bg-gradient-glass border-border/50 backdrop-blur-sm shadow-large">
+    <Card className="bg-gradient-glass border-border backdrop-blur-sm shadow-large">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-2xl font-bold flex items-center gap-2">
@@ -115,12 +121,9 @@ export const RewardsCard = () => {
                 <div className="space-y-1">
                   <div className="font-medium"></div>
                   <div className="text-sm text-muted-foreground">
-                    Staked{" "}
-                    {Math.floor(
-                      (Date.now() - Number(user.lastStakeTimestamp)) /
-                        (1000 * 60 * 60 * 24)
-                    )}{" "}
-                    days ago
+                    Staked {showDifference}{" "}
+                    {diff > 24 ? "day" : "hour"}
+                    {showDifference > 1 ? "s" : ""} ago
                   </div>
                 </div>
 
@@ -140,7 +143,7 @@ export const RewardsCard = () => {
                     className="bg-primary/5 border-primary/20 hover:bg-primary/10"
                     disabled={
                       isClaiming ||
-                      Number(formatUnits(user.pendingRewards, 18)) === 0
+                      Number(formatUnits(user.pendingRewards ?? 0n, 18)) === 0
                     }
                     onClick={handleClaimAll}
                   >
@@ -154,7 +157,9 @@ export const RewardsCard = () => {
           {Number(totalClaimable) <= 0 && (
             <div className="text-center py-8 text-muted-foreground">
               <Gift className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p className="text-lg font-medium mb-2">No rewards to claim yet</p>              
+              <p className="text-lg font-medium mb-2">
+                No rewards to claim yet
+              </p>
             </div>
           )}
         </div>
