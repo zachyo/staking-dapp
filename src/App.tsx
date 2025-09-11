@@ -10,7 +10,7 @@ import { StakingDashboard } from "./components/Dashboard/Dashboard";
 function App() {
   
 
-  const { tokenSymbol, userBal } = useTokenDetails();
+  const { tokenSymbol } = useTokenDetails();
   
   return (
     <AppLayout>
