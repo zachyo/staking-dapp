@@ -3,6 +3,7 @@ import { useStakingStore } from '@/config/store'
 import { StakingCard } from '../staking/StakingCard'
 import { RewardsCard } from '../staking/RewardsCard'
 import { PositionsCard } from '../staking/PositionsCard'
+import MintCard from '../staking/MintCard'
 
 
 export const StakingDashboard = () => {
@@ -38,6 +39,7 @@ export const StakingDashboard = () => {
 
         <TabsContent value="stake" className="space-y-6">
           <StakingCard user={user} protocol={protocol} userBalance={userBalance}/>
+          <MintCard/>
         </TabsContent>
        
 

@@ -23,10 +23,9 @@ export const PositionsCard = () => {
     return format(date, "EEEE, MMMM do, yyyy h:mm:ss a");
   };
 
-  console.log(user);
 
   const isUnlocked = user?.canWithdraw;
-  const timeRemaining = getTimeRemaining(Number(user?.timeUntilUnlock));
+  const timeRemaining = Number(user?.timeUntilUnlock) === 0 ? "Unlocked" : getTimeRemaining(Number(user?.timeUntilUnlock));
   const progress = calculateProgress(
     BigInt(protocol?.minlockDuration as number),
     user?.timeUntilUnlock as bigint

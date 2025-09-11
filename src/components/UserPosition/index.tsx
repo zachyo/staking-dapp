@@ -25,7 +25,6 @@ export const UserPositionCard = () => {
     formatUnits(position?.pendingRewards ?? 0n, 18)
   ).toFixed(5);
   const {claimRewards : onClaimRewards} = useClaimRewards()
-  console.log({position})
 
   if (!address) {
     return (
