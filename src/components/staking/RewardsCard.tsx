@@ -104,7 +104,7 @@ export const RewardsCard = () => {
               Current APR
             </div>
             <div className="text-2xl font-bold text-primary">
-              {Number(protocol.currentAPR)}%
+              {Number(protocol.currentAPR ?? 0n)}%
             </div>
             <div className="text-xs text-muted-foreground">Annual</div>
           </div>

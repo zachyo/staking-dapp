@@ -104,7 +104,7 @@ const useGetUserDetails = () => {
     };
   }, [publicClient, address]);
 
-  return useMemo(() => ({userDetails, isLoading}), [userDetails, isLoading, publicClient]);
+  return useMemo(() => ({userDetails, isLoading}), [userDetails, isLoading, publicClient,address]);
 };
 
 export default useGetUserDetails;

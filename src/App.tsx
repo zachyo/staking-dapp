@@ -4,17 +4,23 @@ import { UserPositionCard } from "./components/UserPosition";
 import useTokenDetails from "./hooks/useGetTokenDetails";
 import { Toaster } from "./components/ui/sonner";
 import { StakingDashboard } from "./components/Dashboard/Dashboard";
-
-
+import { useStakingStore } from "./config/store";
+import { useEffect } from "react";
+import { useAccount } from "wagmi";
 
 function App() {
-  
-
   const { tokenSymbol } = useTokenDetails();
+  const { address } = useAccount();
   
+  useEffect(() => {
+    if (!address) {
+      useStakingStore.getState().reset();
+    }
+  }, [address]);
+
   return (
     <AppLayout>
-      <StakingDashboard/>
+      <StakingDashboard />
       <div className="container mx-auto px-4 py-8 hidden">
         {/* Header */}
         <div className="mb-8">

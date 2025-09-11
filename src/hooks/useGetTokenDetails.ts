@@ -129,7 +129,7 @@ const useTokenDetails = () => {
 
   return useMemo(
     () => ({ tokenSymbol, userBal, allowance }),
-    [tokenSymbol, userBal, allowance]
+    [tokenSymbol, userBal, allowance, address]
   );
 };
 
