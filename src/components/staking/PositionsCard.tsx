@@ -27,13 +27,13 @@ export const PositionsCard = () => {
   const isUnlocked = user?.canWithdraw;
   const timeRemaining = Number(user?.timeUntilUnlock) === 0 ? "Unlocked" : getTimeRemaining(Number(user?.timeUntilUnlock));
   const progress = calculateProgress(
-    BigInt(protocol?.minlockDuration as number),
-    user?.timeUntilUnlock as bigint
+    BigInt(protocol?.minlockDuration ?? 0 as number),
+    user?.timeUntilUnlock ?? 0n as bigint
   );
 
   if (!user?.stakedAmount) {
     return (
-      <Card className="bg-gradient-glass border-border/50 backdrop-blur-sm shadow-large">
+      <Card className="bg-gradient-glass border-border backdrop-blur-sm shadow-large">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Lock className="h-6 w-6 text-primary" />
@@ -55,7 +55,7 @@ export const PositionsCard = () => {
   }
 
   return (
-    <Card className="bg-gradient-glass border-border/50 backdrop-blur-sm shadow-large">
+    <Card className="bg-gradient-glass border-border backdrop-blur-sm shadow-large">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Lock className="h-6 w-6 text-primary" />

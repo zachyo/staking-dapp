@@ -16,7 +16,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         }}
       />
       <Header />    
-      <main className="relative z-10">
+      <main className="relative z-10 bg-primary/5">
         {children}
       </main>
     </div>

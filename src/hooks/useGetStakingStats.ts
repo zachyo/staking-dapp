@@ -75,6 +75,11 @@ const useGetStakingStats = () => {
       (x) => x.name === "EmergencyWithdrawn" && x.type === "event"
     );
 
+    const withdrawnEventAbiItem = STAKING_CONTRACT_ABI.find(
+      // @ts-ignore
+      (x) => x.name === "Withdrawn" && x.type === "event"
+    );
+
     const unwatch = publicClient.watchEvent({
       address: import.meta.env.VITE_STAKING_CONTRACT,
       event: stakedEventAbiItem,
@@ -85,10 +90,15 @@ const useGetStakingStats = () => {
       event: emergencyWithdrawnEventAbiItem,
       onLogs: onStaked,
     });
-
+    const unwatchWithdrawn = publicClient.watchEvent({
+      address: import.meta.env.VITE_STAKING_CONTRACT,
+      event: withdrawnEventAbiItem,
+      onLogs: onStaked,
+    });
     return () => {
       unwatch();
       unwatchEmergencyWithdrawn();
+      unwatchWithdrawn()
     };
   }, [publicClient]);
 

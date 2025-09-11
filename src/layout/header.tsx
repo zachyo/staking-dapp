@@ -13,7 +13,7 @@ export const Header = () => {
               <Coins className="h-6 w-6 text-primary-foreground" />
             </div>
             <div className="flex flex-col">
-              <h1 className="text-2xl font-bold ">
+              <h1 className="text-2xl font-bold text-primary">
                 RewardStake
               </h1>
               {/* <p className="text-xs text-muted-foreground">Web3 Staking Protocol</p> */}

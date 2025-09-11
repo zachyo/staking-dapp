@@ -49,7 +49,7 @@ export const StakingCard = ({user, protocol, userBalance}:StakingProps) => {
   if (!protocol || !user) return null;
 
   return (
-    <Card className="bg-gradient-glass border-border/50 backdrop-blur-sm shadow-large">
+    <Card className="bg-gradient-glass border-border backdrop-blur-sm shadow-large">
       <CardHeader className="space-y-4">
         <div className="flex items-center justify-between">
           <CardTitle className="text-2xl font-bold flex items-center gap-2">
@@ -174,7 +174,7 @@ export const StakingCard = ({user, protocol, userBalance}:StakingProps) => {
               isApproving ||
               isStaking
             }
-            className="w-full bg-black hover:opacity-90 text-primary-foreground font-medium py-3 text-lg"
+            className="w-full bg-primary hover:opacity-90 text-primary-foreground font-medium py-3 text-lg"
             size="lg"
           >
             {Number(stakeAmount) > Number(allowance) && Number(stakeAmount) > 0

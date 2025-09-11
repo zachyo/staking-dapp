@@ -104,6 +104,8 @@ const useWithdraw = ({ onSuccess }: { onSuccess: () => void }) => {
     }
   }, [address, publicClient, writeContractAsync]);
 
+  
+
   return {
     withdraw: withdrawCallback,
     isConfirming,
