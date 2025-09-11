@@ -12,7 +12,6 @@ function App() {
 
   const { tokenSymbol, userBal } = useTokenDetails();
   
-  console.log({ userBal });
   return (
     <AppLayout>
       <StakingDashboard/>

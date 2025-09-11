@@ -125,8 +125,6 @@ const useStakeToken = ({onSuccess}: {onSuccess: () => void}) => {
           args: [parseUnits(amountInWei.toString(), 18)],
         });
 
-        console.log("Stake txHash:", stakeHash);
-
         const stakeReceipt = await publicClient.waitForTransactionReceipt({
           hash: stakeHash,
         });

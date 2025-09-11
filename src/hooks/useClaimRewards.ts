@@ -26,7 +26,6 @@ const useClaimRewards = () => {
         args: [],
       });
 
-      console.log("Claim rewards txHash:", claimHash);
 
       const claimReceipt = await publicClient.waitForTransactionReceipt({
         hash: claimHash,

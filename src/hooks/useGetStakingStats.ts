@@ -57,7 +57,6 @@ const useGetStakingStats = () => {
 
     const onStaked = (logs: any) => {
       const log = logs[0];
-      console.log(logs.args);
       if (log?.args) {
         setTotalStaked(formatUnits(log.args.newTotalStaked, 18));
         setProtocol({
@@ -86,7 +85,7 @@ const useGetStakingStats = () => {
       event: emergencyWithdrawnEventAbiItem,
       onLogs: onStaked,
     });
-    
+
     return () => {
       unwatch();
       unwatchEmergencyWithdrawn();

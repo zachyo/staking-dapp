@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { isAddress } from "viem";
-import { intervalToDuration, formatDuration } from 'date-fns';
+import { intervalToDuration, formatDuration } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -31,18 +31,48 @@ export const formatDate = (dateString: string) => {
 
 export const getTimeRemaining = (seconds: number): string => {
   const duration = intervalToDuration({ start: 0, end: seconds * 1000 });
-  
-  return formatDuration(duration, { 
-    format: ['days', 'hours', 'minutes'],
-    delimiter: ' '
-  }) || '0 minutes';
+
+  return (
+    formatDuration(duration, {
+      format: ["days", "hours", "minutes"],
+      delimiter: " ",
+    }) || "0 minutes"
+  );
 };
 
-
-
-export const calculateProgress = (duration: bigint, durationLeft: bigint): number => {
+export const calculateProgress = (
+  duration: bigint,
+  durationLeft: bigint
+): number => {
   if (duration === 0n) return 100;
-  
+
   const elapsed = duration - durationLeft;
   return Number((elapsed * 100n) / duration);
+};
+
+export const getUserFriendlyError = (error: any): string => {
+  const message = error?.message || "";
+
+  // Extract the main error reason
+  if (message.includes("User rejected") || message.includes("User denied")) {
+    return "User rejected the request.";
+  }
+  console.log({ message });
+
+  // Look for common error patterns and extract them
+  const patterns = [
+    /Details: (.+?)(?:\n|$)/,
+    /Error: (.+?)(?:\n|$)/,
+    /Reason: (.+?)(?:\n|$)/,
+  ];
+
+  for (const pattern of patterns) {
+    const match = message.match(pattern);
+    if (match) {
+      return match[1].trim();
+    }
+  }
+
+  // Fallback to first line of error message
+  return message.split("\n")[0] || "An unexpected error occurred";
 };

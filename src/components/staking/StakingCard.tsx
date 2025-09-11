@@ -45,7 +45,6 @@ export const StakingCard = ({user, protocol, userBalance}:StakingProps) => {
       useStake(stakeAmount);
     }
   };
-  console.log({isStaking, isApproving, allowance})
 
   if (!protocol || !user) return null;
 
@@ -61,7 +60,7 @@ export const StakingCard = ({user, protocol, userBalance}:StakingProps) => {
             variant="secondary"
             className="bg-success/10 text-success border-success/20"
           >
-            {Number(protocol?.currentAPR)}% APR
+            {Number(protocol?.currentAPR ?? 0n)}% APR
           </Badge>
         </div>
         <CardDescription className="text-base">
@@ -78,7 +77,7 @@ export const StakingCard = ({user, protocol, userBalance}:StakingProps) => {
               Current APR
             </div>
             <div className="text-2xl font-bold text-primary">
-              {Number(protocol.currentAPR)}%
+              {Number(protocol.currentAPR??0n)}%
             </div>
           </div>
 
@@ -97,7 +96,7 @@ export const StakingCard = ({user, protocol, userBalance}:StakingProps) => {
               Total Staked
             </div>
             <div className="text-2xl font-bold">
-              {Number(protocol.totalStaked).toLocaleString()}
+              {Number(protocol.totalStaked??"0").toLocaleString()} MST
             </div>
           </div>
         </div>
