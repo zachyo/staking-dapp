@@ -77,7 +77,7 @@ export const useStakingStore = create<StakingStore>((set) => ({
   setSelectedTab: (tab: 'stake' | 'rewards') => set({ selectedTab: tab }),
   setLoading: (loading: boolean) => set({ isLoading: loading }),
   setConnected: (connected: boolean) => set({ isConnected: connected }),
-  reset: () => set(initialState),
+  reset: () => set({userBalance: 0, allowance: 0, user: initialState.user}),
 }))
 
 export default useStakeTokenStore
