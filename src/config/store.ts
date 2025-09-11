@@ -40,6 +40,7 @@ export interface StakingStore {
   setSelectedTab: (tab: 'stake' | 'rewards') => void
   setLoading: (loading: boolean) => void
   setConnected: (connected: boolean) => void
+  reset: () => void
 }
 
 const useStakeTokenStore = create<TokenState>((set) => ({
@@ -53,15 +54,20 @@ export const useStakingContractStore = create<StakingContractState>((set) => ({
   setTotalStaked : (total : bigint) => set(() => ({ totalStaked : total }))
 }))
 
-export const useStakingStore = create<StakingStore>((set) => ({
-  // Initial state
+type tabType = 'stake' | 'rewards'
+const initialState = {
   user: {} as UserDetails,
   userBalance : 0,
   allowance: 0,
   protocol: {} as ProtocolStats,
   isLoading: false,
-  selectedTab: 'stake',
+  selectedTab: 'stake' as tabType,
   isConnected: false,
+}
+
+export const useStakingStore = create<StakingStore>((set) => ({
+  // Initial state
+  ...initialState,
   
   // Actions
   setUser: (user: UserDetails) => set({ user }),
@@ -71,6 +77,7 @@ export const useStakingStore = create<StakingStore>((set) => ({
   setSelectedTab: (tab: 'stake' | 'rewards') => set({ selectedTab: tab }),
   setLoading: (loading: boolean) => set({ isLoading: loading }),
   setConnected: (connected: boolean) => set({ isConnected: connected }),
+  reset: () => set(initialState),
 }))
 
 export default useStakeTokenStore
